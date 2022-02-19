@@ -4,6 +4,9 @@ Analyze your dependencies in your Deno project.
 
 WIP, but works.
 
+- Checks for outdated dependencies and optionally upgrades them.
+- Supports https://deno.land (std & x) (only at the moment).
+
 ## Install
 
 ```
