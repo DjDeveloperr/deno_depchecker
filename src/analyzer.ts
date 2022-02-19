@@ -100,6 +100,34 @@ export async function handleDependency(
         },
       });
     }
+  } else if (dep.hostname === "code.harmony.rocks") {
+    const version = dep.pathname.split("/")[1] ?? "";
+    const parsed = parseVersion(version);
+    if (!parsed) return;
+    const meta = await fetchDenoLandVersions("harmony");
+    const latest = parseVersion(meta.latest);
+    if (!latest) return;
+    if (
+      parsed.major < latest.major || parsed.minor < latest.minor ||
+      parsed.patch < latest.patch
+    ) {
+      results.push({
+        message:
+          `Found Harmony version outdated! Latest version is %c${meta.latest}%c, but you're using %c${version}`,
+        colors: ["green", "", "green"],
+        loc: { mod, range },
+        fix: async () => {
+          const file = await Deno.readTextFile(mod);
+          await Deno.writeTextFile(
+            mod,
+            file.replace(
+              `https://code.harmony.rocks/${version}`,
+              `https://code.harmony.rocks/${meta.latest}`,
+            ),
+          );
+        },
+      });
+    }
   }
 }
 
