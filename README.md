@@ -1,6 +1,6 @@
 # deno_depchecker
 
-Analyze your dependencies in your Deno project.
+Analyze dependencies in your Deno project.
 
 WIP, but works.
 
